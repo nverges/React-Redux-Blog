@@ -5,8 +5,12 @@ class PostsNew extends Component {
 
     // field property can be given arbitrary properties that you can define in a Field 
     renderField(field) {
+        // IMPORTANT! Destructures the touched and error values off the meta property of the field object
+        const { meta: { touched, error} } = field;
+        const className = `form-group ${touched && error ? 'has-danger' : ''}`
+
         return (
-            <div className='form-group'>
+            <div className={className}>
                 
                 <label>{field.label}</label>
                 <input
@@ -19,7 +23,10 @@ class PostsNew extends Component {
 
                 {/* GETS ERROR MESSAGE TO SHOW UP */}
                 {/* meta.error is automatically added to that field object from the validate function */}
-                {field.meta.error}
+                {/* meta.touched is also tracked internally by Form */}
+                <div className='text-help'>
+                {touched ? error : ''}
+                </div>
 
             </div>
         )
@@ -39,7 +46,7 @@ class PostsNew extends Component {
             // app runs our custum onSubmit method that we wrote. Also, bind to this.
             <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
                 <Field 
-                    label='Title'
+                    label='Post Title'
                     name='title'
                     // component property takes in a function (or another comonent) that will be used to display Field component
                     // function that returns some JSX
